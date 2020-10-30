@@ -1,5 +1,6 @@
 import collections, sys, os
 from logic import *
+from planning import *
 
 ############################################################
 # Problem 1: propositional logic
@@ -115,66 +116,45 @@ def liar():
     query = CrashedServer('$x')
     return (formulas, query)
 
-############################################################
-# Problem 5: Odd and even integers
-
-# Return the following 6 laws:
-# 0. Each number $x$ has exactly one successor, which is not equal to $x$.
-# 1. Each number is either even or odd, but not both.
-# 2. The successor number of an even number is odd.
-# 3. The successor number of an odd number is even.
-# 4. For every number $x$, the successor of $x$ is larger than $x$.
-# 5. Larger is a transitive property: if $x$ is larger than $y$ and $y$ is
-#    larger than $z$, then $x$ is larger than $z$.
-# Query: For each number, there exists an even number larger than it.
-def ints():
-    def Even(x): return Atom('Even', x)                  # whether x is even
-    def Odd(x): return Atom('Odd', x)                    # whether x is odd
-    def Successor(x, y): return Atom('Successor', x, y)  # whether x's successor is y
-    def Larger(x, y): return Atom('Larger', x, y)        # whether x is larger than y
-    # Note: all objects are numbers, so we don't need to define Number as an
-    # explicit predicate.
-    # Note: pay attention to the order of arguments of Successor and Larger.
-    # Populate |formulas| with the 6 laws above and set |query| to be the
-    # query.
-    # Hint: You might want to use the Equals predicate, defined in logic.py.  This
-    # predicate is used to assert that two objects are the same.
-    formulas = []
-    query = None
-    # BEGIN_YOUR_CODE (our solution is 23 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
-    # END_YOUR_CODE
-    query = Forall('$x', Exists('$y', And(Even('$y'), Larger('$y', '$x'))))
-    return (formulas, query)
 
 ############################################################
-# Problem 6: semantic parsing (extra credit)
-# Each of the following functions should return a GrammarRule.
-# Look at createBaseEnglishGrammar() in nlparser.py to see what these rules should look like.
-# For example, the rule for 'X is a Y' is:
-#     GrammarRule('$Clause', ['$Name', 'is', 'a', '$Noun'],
-#                 lambda args: Atom(args[1].title(), args[0].lower()))
-# Note: args[0] corresponds to $Name and args[1] corresponds to $Noun.
-# Note: by convention, .title() should be applied to all predicates (e.g., Cat).
-# Note: by convention, .lower() should be applied to constant symbols (e.g., garfield).
+# Problem 4: Planning 
 
-from nlparser import GrammarRule
-
-def createRule1():
-    # Return a GrammarRule for 'every $Noun $Verb some $Noun'
-    # Note: universal quantification should be outside existential quantification.
-    # BEGIN_YOUR_CODE (our solution is 3 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+# Blocks world modification
+def blocksWorldModPlan():
+    # BEGIN_YOUR_CODE (make modifications to the initial and goal states)
+    initial_state = 'On(A, B) & Clear(A) & OnTable(B) & OnTable(C) & Clear(C)'
+    goal_state = 'On(B, A) & On(C, B)'
     # END_YOUR_CODE
 
-def createRule2():
-    # Return a GrammarRule for 'there is some $Noun that every $Noun $Verb'
-    # BEGIN_YOUR_CODE (our solution is 3 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    planning_problem = \
+    PlanningProblem(initial=initial_state,
+                    goals=goal_state,
+                    actions=[Action('ToTable(x, y)',
+                                    precond='On(x, y) & Clear(x)',
+                                    effect='~On(x, y) & Clear(y) & OnTable(x)'),
+                             Action('FromTable(y, x)',
+                                    precond='OnTable(y) & Clear(y) & Clear(x)',
+                                    effect='~OnTable(y) & ~Clear(x) & On(y, x)')])
+    
+    return linearize(GraphPlan(planning_problem).execute())
+
+def logisticsPlan():
+    # BEGIN_YOUR_CODE (use the previous problem as a guide and uncomment the starter code below if you want!)
+    # initial_state = 
+    # goal_state = 
+    # planning_problem = \
+    # PlanningProblem(initial=initial_state,
+    #                 goals=goal_state,
+    #                 actions=[Action('',
+    #                                 precond='',
+    #                                 effect=''),
+    #                          Action('',
+    #                                 precond='',
+    #                                 effect=''),
+    #                          Action('',
+    #                                 precond='',
+    #                                 effect='')])
     # END_YOUR_CODE
 
-def createRule3():
-    # Return a GrammarRule for 'if a $Noun $Verb a $Noun then the former $Verb the latter'
-    # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
-    # END_YOUR_CODE
+    return linearize(GraphPlan(planning_problem).execute())

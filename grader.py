@@ -37,6 +37,20 @@ def checkFormula(name, predForm, preconditionForm=None):
     grader.addMessage('Example model: %s' % rstr(random.choice(targetModels)))
     grader.assignFullCredit()
 
+# DO NOT MODIFY CODE IN GRADER OR POINTS WILL BE DEDUCTED
+def checkBlocksWorldModPlan(name, output):
+    print(f"Output from blocksWorldModPlan(): {output}")
+    if len(output) == 3:
+        grader.addMessage('Please make modifications to the initial and goal states!')
+        grader.fail('No modifications have been made')
+    elif len(output) == 5:
+        grader.addMessage('Correct!')
+        grader.assignFullCredit()
+
+def checkLogisticsPlan(name, output):
+    print(f"Output from blocksWorldModPlan(): {output}")
+    grader.assignFullCredit()
+
 # name: name of this formula set (used to load the models)
 # predForms: formulas predicted in the submission
 # predQuery: query formula predicted in the submission
@@ -111,19 +125,24 @@ addParts('3a', 6, submission.liar)
 ############################################################
 # Problem 4: Modus Ponens
 
-grader.addManualPart('4a', 5, description='Test CNF conversion and new Modus ponens rule to derive C')
-grader.addManualPart('4b', 5, description='Test usage of the resolution rule to derive D')
+# grader.addManualPart('4a', 5, description='Test CNF conversion and new Modus ponens rule to derive C')
+# grader.addManualPart('4b', 5, description='Test usage of the resolution rule to derive D')
 
 ############################################################
 # Problem 5: odd and even integers
 
 # Add 5a-[0-5], 5a-all, 5a-run
-addParts('5a', 6, submission.ints)
-
-grader.addManualPart('5b', 10, description='Test argument that there is no finite model where all 7 formulas are consistent')
+# addParts('5a', 6, submission.ints)
+# grader.addManualPart('5b', 10, description='Test argument that there is no finite model where all 7 formulas are consistent')
 
 ############################################################
 # Problem 6: semantic parsing
+
+############################################################
+# New Problem 6: planning
+grader.addBasicPart('4a', lambda : checkBlocksWorldModPlan('6a', submission.blocksWorldModPlan()), 2, description='Test formula 4a implementation')
+grader.addBasicPart('4b', lambda : checkLogisticsPlan('6b', submission.logisticsPlan()), 0, description='Test formula 4b implementation')
+
 
 import nlparser
 
@@ -163,125 +182,125 @@ def testExtraCreditKnowledgeBase(examples, ruleCreator):
 
 ### 6a
 
-def test_6a_1():
-    examples = [
-        ('Every person likes some cat.', ('tell', CONTINGENT)),
-        ('Every cat is a mammal.', ('tell', CONTINGENT)),
-        ('Every person likes some mammal?', ('ask', ENTAILMENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule1)
-grader.addBasicPart('6a-1', test_6a_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6a_1():
+#     examples = [
+#         ('Every person likes some cat.', ('tell', CONTINGENT)),
+#         ('Every cat is a mammal.', ('tell', CONTINGENT)),
+#         ('Every person likes some mammal?', ('ask', ENTAILMENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule1)
+#grader.addBasicPart('6a-1', test_6a_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6a_2():
-    examples = [
-        ('Every person likes some cat.', ('tell', CONTINGENT)),
-        ('Every tabby is a cat.', ('tell', CONTINGENT)),
-        ('Every person likes some tabby?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule1)
-grader.addBasicPart('6a-2', test_6a_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6a_2():
+#     examples = [
+#         ('Every person likes some cat.', ('tell', CONTINGENT)),
+#         ('Every tabby is a cat.', ('tell', CONTINGENT)),
+#         ('Every person likes some tabby?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule1)
+#grader.addBasicPart('6a-2', test_6a_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6a_3():
-    examples = [
-        ('Every person likes some cat.', ('tell', CONTINGENT)),
-        ('Every person is a mammal.', ('tell', CONTINGENT)),
-        ('Every mammal likes some cat?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule1)
-grader.addBasicPart('6a-3', test_6a_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6a_3():
+#     examples = [
+#         ('Every person likes some cat.', ('tell', CONTINGENT)),
+#         ('Every person is a mammal.', ('tell', CONTINGENT)),
+#         ('Every mammal likes some cat?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule1)
+#grader.addBasicPart('6a-3', test_6a_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6a_4():
-    examples = [
-        ('Every person likes some cat.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule1)
-grader.addBasicPart('6a-4', test_6a_4, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6a_4():
+#     examples = [
+#         ('Every person likes some cat.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule1)
+#grader.addBasicPart('6a-4', test_6a_4, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6a_5():
-    examples = [
-        ('Every person likes some cat.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule1)
-grader.addBasicPart('6a-5', test_6a_5, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6a_5():
+#     examples = [
+#         ('Every person likes some cat.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule1)
+#grader.addBasicPart('6a-5', test_6a_5, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
 ### 6b
 
-def test_6b_1():
-    examples = [
-        ('There is some cat that every person likes.', ('tell', CONTINGENT)),
-        ('Every cat is a mammal.', ('tell', CONTINGENT)),
-        ('There is some mammal that every person likes?', ('ask', ENTAILMENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule2)
-grader.addBasicPart('6b-1', test_6b_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6b_1():
+#     examples = [
+#         ('There is some cat that every person likes.', ('tell', CONTINGENT)),
+#         ('Every cat is a mammal.', ('tell', CONTINGENT)),
+#         ('There is some mammal that every person likes?', ('ask', ENTAILMENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule2)
+#grader.addBasicPart('6b-1', test_6b_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6b_2():
-    examples = [
-        ('There is some cat that every person likes.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes some cat?', ('ask', ENTAILMENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule2)
-grader.addBasicPart('6b-2', test_6b_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6b_2():
+#     examples = [
+#         ('There is some cat that every person likes.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes some cat?', ('ask', ENTAILMENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule2)
+#grader.addBasicPart('6b-2', test_6b_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6b_3():
-    examples = [
-        ('There is some cat that every person likes.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule2)
-grader.addBasicPart('6b-3', test_6b_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6b_3():
+#     examples = [
+#         ('There is some cat that every person likes.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule2)
+#grader.addBasicPart('6b-3', test_6b_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
 ### 6c
 
-def test_6c_1():
-    examples = [
-        ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield.', ('tell', CONTINGENT)),
-        ('Jon feeds Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule3)
-grader.addBasicPart('6c-1', test_6c_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6c_1():
+#     examples = [
+#         ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield.', ('tell', CONTINGENT)),
+#         ('Jon feeds Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule3)
+#grader.addBasicPart('6c-1', test_6c_1, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6c_2():
-    examples = [
-        ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon feeds Garfield?', ('ask', ENTAILMENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule3)
-grader.addBasicPart('6c-2', test_6c_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6c_2():
+#     examples = [
+#         ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon feeds Garfield?', ('ask', ENTAILMENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule3)
+#grader.addBasicPart('6c-2', test_6c_2, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6c_3():
-    examples = [
-        ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
-        ('Jon likes Garfield.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon feeds Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule3)
-grader.addBasicPart('6c-3', test_6c_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6c_3():
+#     examples = [
+#         ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
+#         ('Jon likes Garfield.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon feeds Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule3)
+#grader.addBasicPart('6c-3', test_6c_3, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
-def test_6c_4():
-    examples = [
-        ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
-        ('Jon is a person.', ('tell', CONTINGENT)),
-        ('Jon likes some cat.', ('tell', CONTINGENT)),
-        ('Garfield is a cat.', ('tell', CONTINGENT)),
-        ('Jon feeds Garfield?', ('ask', CONTINGENT)),
-    ]
-    testExtraCreditKnowledgeBase(examples, submission.createRule3)
-grader.addBasicPart('6c-4', test_6c_4, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
+# def test_6c_4():
+#     examples = [
+#         ('If a person likes a cat then the former feeds the latter.', ('tell', CONTINGENT)),
+#         ('Jon is a person.', ('tell', CONTINGENT)),
+#         ('Jon likes some cat.', ('tell', CONTINGENT)),
+#         ('Garfield is a cat.', ('tell', CONTINGENT)),
+#         ('Jon feeds Garfield?', ('ask', CONTINGENT)),
+#     ]
+#     testExtraCreditKnowledgeBase(examples, submission.createRule3)
+#grader.addBasicPart('6c-4', test_6c_4, maxPoints=1, maxSeconds=60, description='Check basic behavior of rule', extraCredit=True)
 
 grader.grade()
